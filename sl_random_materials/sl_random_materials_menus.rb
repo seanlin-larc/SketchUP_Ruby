@@ -28,20 +28,26 @@ module SL_Random_Materials
 		if !file_loaded?(__FILE__)
 
       # Add a submenu to the "Plugins" menu.
-      sl_random_materials_menu = UI.menu("Extensions").add_separator
+      
       # Create the toolbar object we will be using
-      tb = UI::Toolbar.new("EW Template")
-      	
-			# See the SU Ruby API docs for more information on creating
+            	
+      # See the SU Ruby API docs for more information on creating
       # toolbars and menu commands.
+      sl_random_materials_menu = UI.menu("Extensions")
       command = UI::Command.new("SL Randomly Assign Materials")
       command.tooltip = "Randomly assign materials by assigned propotion"
       command.status_bar_text = "Select faces with materials to be assigned"
       command.menu_text = "SL Randomly Assign Materials"
+      command.set_validaton_proc {
+		if Sketchup.active_model.selection.length == 0
+			MF_GRAYED
+		else
+			MF_ENABLED
+		end}
       sl_random_materials_menu.add_item(command)
       
       # This tells SU that the file is loaded into the menu system
-			file_loaded(__FILE__)
+		file_loaded(__FILE__)
 		end
 		
 	end #module
