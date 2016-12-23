@@ -1,5 +1,6 @@
 =begin
 Copyright 2017 Sean Lin
+seanlin.larc[at]gmail.com
 All Rights Reserved
 
 Script Name:
@@ -22,65 +23,44 @@ WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 =end
 
+module SL # <--Change this to your own personal name space
 
-# The whole thing is wrapped in a SU_Extensions module
-# Developers should wrap their extensions inside their own modules.
-module SL_Random_Materials # <--Change this to your own personal name space
+	module SL_Random_Materials # <--Change this to your own scripts name space
 
-	# This entire script is wrapped inside its own module,
-  # inside of our SU_Extensions module.
-	module Random_Materials # <--Change this to your own scripts name space
+		### CONSTANTS ###
+		# Extension Information
+		EXTENSION		= self
+		EXTENSION_ID	= 'SL_Random_Materials'.freeze
+		EXTENSION_NAME	= 'SL Randomly Apply Materials'.freeze
+		
+		# Resource paths
+		file = File.expand_path ( _FILE_ )
+		file.force_encoding ("UTF-8) if file.respond_to? ( :force_encoding )
+		FILENAMESPCAE	= File.basename( file, '.*')
+		PATH_ROOT		= File.dirname( file ).freeze
+		PATH			= File.join( PATH_ROOT, FILENAMESPACE ).freeze
 
 		# Common required files for creating extensions
 		require 'sketchup.rb'
 		require 'extensions.rb'
 		require 'langhandler.rb'
 
-
+		### MENU ###
 		# The "new" method is used to create a new SketchupExtension object. 
 		# Note that once the extension object is created, it will not appear in 
-    # the Extension Manager dialog until your register it with the 
-    # Sketchup.register_extension method.
-		sl_random_materials = SketchupExtension.new( 
-      "SL Random Materials", 
-      "sl_random_materials/sl_random_materials_menus.rb")
-
-
-		# The "name=" method sets the name which appears for an 
-    # extension inside the Extensions Manager dialog.
-		sl_random_materials.name = "SketchUp Extensions " +
-    "SL Random Materials"
-
-
-		# The "description=" method sets the long description which appears 
-    # beneath an extension inside the Extensions Manager dialog.
-		sl_random_materials.description = "This extension randomly assigns " +
-    "selected materials to faces with designated propotion"
-
-
-		# The "version" method sets the version which appears beneath an extension
-    # inside the Extensions Manager dialog.  This is recommended to be a 
-    # major.minor.revision versioning scheme.
-		sl_random_materials.version = '1.0.0'
-
-
-		# The "copyright=" method sets the copyright string which appears 
-    # beneath an extension inside the Extensions Manager dialog.
-		sl_random_materials.copyright = "2016"
-		 
-		 
-		# The "creator=" method sets the creator string which appears beneath 
-    # an extension inside the Extensions Manager dialog.
-		sl_random_materials.creator = "Sean Lin"
-
+    	# the Extension Manager dialog until your register it with the 
+    	# Sketchup.register_extension method.
 		
-		# The "register_extension" method is used to register an extension with 
-    # SketchUp's extension manager (in SketchUp preferences). This method must
-    # be called after all the SketchupExtension methods have been called 
-    # (those shown above).
-		Sketchup.register_extension( sl_random_materials, true )
-
+		unless file_loaded?( _FILE_ )
+			file = File.join( PATH, 'sl_random_materials_core.rb')
+			extn = SketchExtension.new( EXTENSION_NAME, file)
+			extn.description = "Randomly apply materials to faces by assigned propotion"
+			extn.version = '1.0.0'
+			extn.copyright = 'Sean Lin @2017'
+			extn.creator = 'Sean Lin (seanlinlarc@gmail.com)'
+			Sketchup.register_extension(extn, true)
+		end
 		
-	end # Random_Materials
+	end # module SL_Random_Materials
 
-end # SL_Random_Materials
+end # module SL
