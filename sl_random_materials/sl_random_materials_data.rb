@@ -17,7 +17,9 @@ module SL_Random_Materials # <--Change this to your own personal name space
 			model = Sketchup.active_model
 			sel = model.selection
 			ents = model.active_entities
-			sel.add( ents.to_a )
+			
+			
+			
 		end # main
 		
 		def self.msgbox(msg)
