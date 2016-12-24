@@ -73,7 +73,8 @@ module SL::Extensions::SL_Random_Materials
 		
 		#Calculate proportion
 		ary_mats_seeds.each {|i|
-==>			hash_mat_seed_pct = (100 * ary_mats_seeds[i].to_f / tot_seed.to_f).round(2)
+			hash_mat_seed_pct = (ary_mats_seeds[i].to_f / tot_seeds.to_f).round(4) * 100
+			ary_mats_seeds[i].merge! {:pct => hash_mat_seed_pct}
 		#Display materials and their proportions
 		
 	end # cmd	
