@@ -43,7 +43,9 @@ module SL::Extensions::SL_Random_Materials
 			mat = sel_faces[i].material
 			sel_mats << mat
 			}
-		sel_mats.uniq!
+		sel_mats.uniq! #Keep only unique materials
+		sel_mats.delete(nil) #Remove "Default" material.
+		
 			
 		#Check number of materials
 		#End Script if only one material is selected
@@ -77,14 +79,33 @@ module SL::Extensions::SL_Random_Materials
 		#Calculate proportion
 		ary_mats_seeds.each {|i|
 			hash_mat_seed_pct = (ary_mats_seeds[i].to_f / tot_seeds.to_f).round(4) * 100
-			ary_mats_seeds[i][:pct] = hash_mat_seed_pct
+			ary_mats_seeds[i][:mat_pct] = hash_mat_seed_pct
 			#Make a description
-			mats_pct_desc += "#{ary_mats_seeds[i][:mat]} will take #{ary_mats_seeds[i][:pct]} %. \n"
+			mats_pct_desc += "#{ary_mats_seeds[i][:mat_name]} will take #{ary_mats_seeds[i][:mat_pct]} %. \n"
 			}
 		
 		#Display materials and their proportions
-		confirm = UI.messagebox("#{mats_pct} \n OK to continue. \n Cancel to abort.", type = MB_OKCANCEL)
+		confirm = UI.messagebox("#{mats_pct_desc} \n OK to continue. \n Cancel to abort.", type = MB_OKCANCEL)
 		break unless confirm == 1
+		
+		
+#Assigning materials to faces
+#Refer to Alternative Process below
+		
+		#build accumulate seed counts
+		acc_seed_counts = []
+		ary_mats_seeds.each {|i|
+			sum = acc_counts.reduce(:+) 
+			acc_counts << ary_mats_seeds[i][:mat_seed]+ sum
+			}
+==>		sel.faces.each {|i|
+			}
+		
+		
+#Alternative Process: Ask users to pick faces		
+#Discarded cause limited knowledge to Sketchup API
+=begin
+
 		
 		#Ask for faces to be applied
 		sel.clear
@@ -115,9 +136,10 @@ module SL::Extensions::SL_Random_Materials
 			end
 		end #until 
 			#Apply materials to faces
-==>		
-		end
+=end
 		
+		end
+
 		
 	end # cmd	
  
