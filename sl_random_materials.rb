@@ -1,5 +1,5 @@
 =begin
-Copyright 2017 Sean Lin
+Copyright 2017 Y-H Sean Lin
 All Rights Reserved
 Script Name:
 sl_random_materials.rbz
@@ -9,8 +9,10 @@ to selected faces with designated propotion.
 Usage:
 Access the extension from the menu "Entensions > SL Random Materials".
 History:
-1.0 - 2017-1-01
-   * First release
+1.1.1 - 2017-1-09
+	* Add message of statistics
+1.0.0 - 2017-1-03
+	* First release
 Disclaimer:
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED 
 WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF 
@@ -65,7 +67,7 @@ module SLin # <--Change this to your own personal name space
 		 
 		# The "creator=" method sets the creator string which appears beneath 
     # an extension inside the Extensions Manager dialog.
-		sl_random_materials.creator = "Sean Lin"
+		sl_random_materials.creator = "Y-H Sean Lin"
 
 		
 		# The "register_extension" method is used to register an extension with 
