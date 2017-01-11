@@ -1,5 +1,5 @@
 =begin
-Copyright 2017 Sean Lin
+Copyright 2017 Y-H Sean Lin
 All Rights Reserved
 Disclaimer
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED 
@@ -81,7 +81,6 @@ module SLin
 					mat_name = i.name
 					UI.messagebox("Proportion of a material is the seed of material 
 						\ndivided by the total seeds.
-						\nInput higher seeds to get better result. 
 						\nTotal seeds is #{tot_seeds} now.",
 						type=MB_OK)
 					prompt = ["Number of Seeds for material \"#{mat_name}\":"]
@@ -89,17 +88,20 @@ module SLin
 					mat_seed = UI.inputbox(prompt, default, "Input Number of Seeds for material #{mat_name}").at(0).to_f
 					return if !mat_seed
 					tot_seeds += mat_seed
-					hash_mat_seed = {:mat_id => mat_id, :mat_name => mat_name, :mat_seed => mat_seed, :mat_accum_seed => tot_seeds}
+					hash_mat_seed = {:mat_id => mat_id, :mat_name => mat_name, :mat_seed => mat_seed, :mat_accum_seed => tot_seeds, :mat_count => 0}
 					ary_mats_seeds << hash_mat_seed
 				end #do sel_mats.each
 								
 				#Calculate proportion
 				mat_seed_pct = 0.0
+				accum_seed_pct = 0.0
 				ary_mats_seeds.each do |i|
 					mat_seed_pct = ((i[:mat_seed] / tot_seeds).round(4) * 100)
+					accum_seed_pct += mat_seed_pct
 					i[:mat_pct] = mat_seed_pct
+					i[:mat_accum_pct] = accum_seed_pct
 					#Make a description
-					mats_pct_desc += "#{i[:mat_name]} will take approximate #{i[:mat_pct]} %. \n"
+					mats_pct_desc += "#{i[:mat_name]} will take approximate #{i[:mat_pct]}%.\n"
 				end #do ary_mats_seeds.each
 			
 				#Display materials and their proportions
@@ -108,15 +110,25 @@ module SLin
 						
 				#Assigning materials to faces
 				sel_faces.each do |i|
-					rand_num = rand(tot_seeds)
+					rand_pct = rand(100)
 					ary_mats_seeds.each do |m| 
-						chk = rand_num <= m[:mat_accum_seed]
+						chk = rand_pct <= m[:mat_accum_pct]
 						if chk == true
 							i.material = m[:mat_id]
+							m[:mat_count] += 1
 							break
 						end
 					end #do ary_mats_seeds.each
 				end #do sel_faces.each
+
+				#Generate report
+				faces_count_msg = sel_faces.length
+				mats_count_msg = ""
+				ary_mats_seeds.each do |i|
+					mats_count_msg += "#{i[:mat_name]} is applied to #{i[:mat_count]} faces. \n"
+
+				end #do ary_mats_seeds.each
+				UI.messagebox("#{faces_count_msg} faces are painted. \n#{mats_count_msg}", type = MB_OK)
 
 				#Mark the end of Undo point
 				model.commit_operation	
