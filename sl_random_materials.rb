@@ -57,7 +57,7 @@ module SLin # <--Change this to your own personal name space
 		# The "version" method sets the version which appears beneath an extension
     # inside the Extensions Manager dialog.  This is recommended to be a 
     # major.minor.revision versioning scheme.
-		sl_random_materials.version = '1.0.0'
+		sl_random_materials.version = '1.1.1'
 
 
 		# The "copyright=" method sets the copyright string which appears 
